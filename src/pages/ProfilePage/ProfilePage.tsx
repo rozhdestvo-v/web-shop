@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Grid, Tabs, Tab, IconButton } from '@mui/material';
-import { FavoriteBorder, ShoppingCart, Person, Delete, Clear } from '@mui/icons-material';
+import { Container, Typography, Box, Grid, Tabs, Tab } from '@mui/material';
+import { FavoriteBorder, ShoppingCart, Person, Clear } from '@mui/icons-material';
 import { GlassCard, GlassButton, ProductCard } from '../../components';
 import { useFavorites } from '../../context/FavoritesContext';
 import { useCart } from '../../context/CartContext';
@@ -10,16 +10,12 @@ import { Product } from '../../components/ProductCard/ProductCard';
 const ProfilePage: React.FC = () => {
   const { mode } = useTheme();
   const isDark = mode === 'dark';
-  const { favorites, removeFromFavorites, clearFavorites } = useFavorites();
+  const { favorites, clearFavorites } = useFavorites();
   const { addToCart } = useCart();
   const [activeTab, setActiveTab] = useState(0);
 
   const handleAddToCart = (product: Product) => {
     addToCart(product);
-  };
-
-  const handleRemoveFromFavorites = (productId: number) => {
-    removeFromFavorites(productId);
   };
 
   return (

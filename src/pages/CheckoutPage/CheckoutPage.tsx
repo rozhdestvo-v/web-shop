@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Grid, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Paper } from '@mui/material';
+import { Container, Typography, Box, Grid, FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { CheckCircle, LocalShipping, Payment, Person } from '@mui/icons-material';
 import { GlassCard, GlassButton, GlassInput } from '../../components';
 import { useCart } from '../../context/CartContext';
@@ -11,7 +11,6 @@ const CheckoutPage: React.FC = () => {
   const { mode } = useTheme();
   const isDark = mode === 'dark';
   const { items, getTotalPrice, clearCart } = useCart();
-  const [step, setStep] = useState(1);
 
   // Форма
   const [formData, setFormData] = useState({
