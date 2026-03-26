@@ -1,0 +1,122 @@
+{
+  "project": "web-shop",
+  "description": "Интернет-магазин товаров для программистов",
+  "design": {
+    "style": "glassmorphism",
+    "description": "Современный стеклянный дизайн с эффектом матового стекла, размытия и полупрозрачности",
+    "colorPalette": {
+      "primary": "#1a237e",
+      "primaryDark": "#0d47a1",
+      "background": {
+        "gradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        "pastel": ["#f3e7e9", "#e8f4f8", "#f9f1f5", "#e3f2fd"]
+      },
+      "glass": {
+        "background": "rgba(255, 255, 255, 0.1)",
+        "backdropFilter": "blur(10px)",
+        "border": "1px solid rgba(255, 255, 255, 0.2)",
+        "boxShadow": "0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+      },
+      "text": {
+        "primary": "#ffffff",
+        "secondary": "rgba(255, 255, 255, 0.8)"
+      },
+      "accent": {
+        "pink": "#ff6b9d",
+        "purple": "#c44cff",
+        "blue": "#4facfe",
+        "mint": "#00f2fe"
+      }
+    },
+    "typography": {
+      "fontFamily": "'Inter', 'Poppins', sans-serif",
+      "headings": "bold, modern",
+      "body": "light, readable"
+    },
+    "effects": {
+      "glassmorphism": {
+        "background": "rgba(255, 255, 255, 0.1)",
+        "backdropFilter": "blur(12px) saturate(180%)",
+        "borderRadius": "16px",
+        "border": "1px solid rgba(255, 255, 255, 0.25)"
+      },
+      "hover": {
+        "transform": "translateY(-4px)",
+        "boxShadow": "0 12px 40px rgba(31, 38, 135, 0.5)"
+      },
+      "glow": {
+        "boxShadow": "0 0 20px rgba(79, 172, 254, 0.4)"
+      }
+    }
+  },
+  "products": {
+    "categories": [
+      {
+        "id": "mousepads",
+        "name": "Коврики для мышек",
+        "icon": "mouse"
+      },
+      {
+        "id": "antistress",
+        "name": "Антистресс игрушки",
+        "icon": "toys"
+      },
+      {
+        "id": "keyboards",
+        "name": "Клавиатуры",
+        "icon": "keyboard"
+      },
+      {
+        "id": "chairs",
+        "name": "Кресла",
+        "icon": "chair"
+      },
+      {
+        "id": "mice",
+        "name": "Мышки",
+        "icon": "mouse"
+      },
+      {
+        "id": "stands",
+        "name": "Подставки",
+        "icon": "devices"
+      }
+    ],
+    "targetAudience": "программисты, разработчики, IT-специалисты"
+  },
+  "features": {
+    "routing": {
+      "pages": [
+        "/",
+        "/catalog",
+        "/catalog/:category",
+        "/product/:id",
+        "/cart",
+        "/checkout",
+        "/profile"
+      ]
+    },
+    "components": {
+      "layout": ["Header", "Footer", "Sidebar"],
+      "ui": ["ProductCard", "CategoryCard", "Cart", "SearchBar", "FilterPanel"],
+      "glassmorphic": ["GlassCard", "GlassButton", "GlassInput", "GlassModal"]
+    },
+    "functionality": [
+      "Каталог товаров с фильтрами",
+      "Поиск по товарам",
+      "Корзина покупок",
+      "Избранное",
+      "Оформление заказа",
+      "Личный кабинет",
+      "Отзывы о товарах"
+    ]
+  },
+  "technicalStack": {
+    "frontend": "React + TypeScript",
+    "ui": "Material UI v6",
+    "routing": "React Router v6",
+    "styling": "CSS-in-JS (MUI sx prop)",
+    "icons": "@mui/icons-material"
+  },
+  "mood": "современный, технологичный, премиальный, уютный"
+}

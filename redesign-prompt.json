@@ -1,0 +1,213 @@
+{
+  "project": "web-shop",
+  "task": "Полная переработка дизайна",
+  "designSystem": {
+    "style": "Современный glassmorphism 2.0",
+    "principles": [
+      "Максимальная простота и чистота",
+      "Высокий контраст для читаемости",
+      "Глубина через слои стекла",
+      "Минималистичные тени и свечение"
+    ],
+    "colorPalette": {
+      "description": "Только 3 комплиментарных цвета + нейтральные",
+      "primary": {
+        "name": "Deep Purple",
+        "light": "#8B85FF",
+        "main": "#5B52E8",
+        "dark": "#3D34A8"
+      },
+      "secondary": {
+        "name": "Coral Pink",
+        "light": "#FFB5C5",
+        "main": "#FF6B8A",
+        "dark": "#E84A6A"
+      },
+      "accent": {
+        "name": "Soft Mint",
+        "light": "#B8F5E8",
+        "main": "#6ED9C0",
+        "dark": "#4AB89A"
+      },
+      "neutral": {
+        "white": "#FFFFFF",
+        "offWhite": "#F8F7FC",
+        "lightGray": "#E8E6F0",
+        "mediumGray": "#8B88A8",
+        "darkGray": "#2D2A4A",
+        "black": "#0D0A1A"
+      }
+    },
+    "lightTheme": {
+      "background": {
+        "main": "#F8F7FC",
+        "gradient": "linear-gradient(135deg, #F8F7FC 0%, #E8E6F0 100%)"
+      },
+      "glass": {
+        "background": "rgba(255, 255, 255, 0.85)",
+        "border": "1px solid rgba(255, 255, 255, 0.6)",
+        "shadow": "0 8px 32px rgba(91, 82, 232, 0.12)",
+        "backdropFilter": "blur(20px) saturate(180%)"
+      },
+      "text": {
+        "primary": "#2D2A4A",
+        "secondary": "#5B52E8",
+        "tertiary": "#8B88A8"
+      },
+      "header": {
+        "background": "rgba(255, 255, 255, 0.7)",
+        "text": "#2D2A4A",
+        "accent": "#5B52E8"
+      },
+      "footer": {
+        "background": "linear-gradient(135deg, #5B52E8 0%, #3D34A8 100%)",
+        "text": "#FFFFFF"
+      }
+    },
+    "darkTheme": {
+      "background": {
+        "main": "#0D0A1A",
+        "gradient": "linear-gradient(135deg, #0D0A1A 0%, #1A1630 100%)"
+      },
+      "glass": {
+        "background": "rgba(45, 42, 74, 0.7)",
+        "border": "1px solid rgba(255, 255, 255, 0.15)",
+        "shadow": "0 8px 32px rgba(0, 0, 0, 0.4)",
+        "backdropFilter": "blur(20px) saturate(180%)"
+      },
+      "text": {
+        "primary": "#FFFFFF",
+        "secondary": "#8B85FF",
+        "tertiary": "#B8B5D8"
+      },
+      "header": {
+        "background": "rgba(45, 42, 74, 0.6)",
+        "text": "#FFFFFF",
+        "accent": "#8B85FF"
+      },
+      "footer": {
+        "background": "linear-gradient(135deg, #2D2A4A 0%, #1A1630 100%)",
+        "text": "#E8E6F0"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    "headings": {
+      "fontWeight": 700,
+      "letterSpacing": "-0.02em",
+      "color": "primary"
+    },
+    "body": {
+      "fontWeight": 400,
+      "lineHeight": 1.6,
+      "color": "text.primary"
+    }
+  },
+  "components": {
+    "glassCard": {
+      "background": "glass.background",
+      "borderRadius": "20px",
+      "border": "glass.border",
+      "shadow": "glass.shadow",
+      "backdropFilter": "glass.backdropFilter",
+      "hoverEffect": {
+        "transform": "translateY(-4px)",
+        "shadow": "0 12px 40px rgba(91, 82, 232, 0.2)"
+      }
+    },
+    "buttons": {
+      "primary": {
+        "background": "linear-gradient(135deg, #5B52E8 0%, #3D34A8 100%)",
+        "color": "#FFFFFF",
+        "borderRadius": "12px",
+        "fontWeight": 600,
+        "shadow": "0 4px 15px rgba(91, 82, 232, 0.4)",
+        "hover": {
+          "transform": "translateY(-2px)",
+          "shadow": "0 8px 25px rgba(91, 82, 232, 0.5)"
+        }
+      },
+      "secondary": {
+        "background": "transparent",
+        "border": "2px solid #5B52E8",
+        "color": "#5B52E8",
+        "borderRadius": "12px",
+        "fontWeight": 600,
+        "hover": {
+          "background": "rgba(91, 82, 232, 0.1)"
+        }
+      }
+    },
+    "icons": {
+      "size": "24px",
+      "strokeWidth": "2px",
+      "color": "primary",
+      "contrast": "high"
+    }
+  },
+  "layout": {
+    "header": {
+      "style": "floating-glass",
+      "position": "fixed",
+      "background": "header.background",
+      "borderRadius": "16px",
+      "marginTop": "12px",
+      "padding": "12px 24px",
+      "textColor": "header.text",
+      "accentColor": "header.accent"
+    },
+    "footer": {
+      "background": "footer.background",
+      "textColor": "footer.text",
+      "padding": "48px 24px"
+    },
+    "cards": {
+      "productCard": {
+        "background": "glass.background",
+        "borderRadius": "20px",
+        "imageAspectRatio": "4/3",
+        "textColor": "text.primary",
+        "priceColor": "primary",
+        "buttonColor": "primary"
+      }
+    }
+  },
+  "accessibility": {
+    "contrastRatio": {
+      "text": "minimum 4.5:1 (WCAG AA)",
+      "largeText": "minimum 3:1",
+      "icons": "minimum 3:1"
+    },
+    "readability": {
+      "textOnGlass": "Использовать тёмный текст на светлом стекле и наоборот",
+      "buttonLabels": "Всегда белый текст на цветном фоне",
+      "iconLabels": "Добавлять aria-label для иконок"
+    }
+  },
+  "interactions": {
+    "hover": {
+      "duration": "0.3s",
+      "easing": "ease-in-out",
+      "effects": ["translateY", "shadow", "brightness"]
+    },
+    "focus": {
+      "outline": "2px solid #5B52E8",
+      "outlineOffset": "2px"
+    },
+    "active": {
+      "transform": "scale(0.98)"
+    }
+  },
+  "rules": [
+    "Использовать ТОЛЬКО 3 основных цвета: Deep Purple, Coral Pink, Soft Mint",
+    "Весь текст должен быть контрастным (минимум 4.5:1)",
+    "Кнопки: белый текст на цветном градиенте",
+    "Иконки: крупные, с высоким контрастом",
+    "Стеклянные карточки: 85% непрозрачности для читаемости",
+    "Тени: мягкие, цветные (не чёрные)",
+    "Градиенты: только между оттенками одного цвета",
+    "Анимации: плавные, 300ms",
+    "Тёмная тема: инвертировать светлоту, сохранять оттенки"
+  ]
+}
