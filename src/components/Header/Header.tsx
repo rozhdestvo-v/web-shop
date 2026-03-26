@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton, Badge, Drawer, List, ListItem, ListItemText, ListItemButton, InputBase } from '@mui/material';
-import { ShoppingCart, Menu, Close, Storefront, AccountCircle, Brightness4, Brightness7, Search as SearchIcon, KeyboardArrowRight } from '@mui/icons-material';
+import { ShoppingCart, Menu, Close, ShoppingBag, AccountCircle, Brightness4, Brightness7, Search as SearchIcon, KeyboardArrowRight } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import GlassButton from '../GlassButton/GlassButton';
 import { useCart } from '../../context/CartContext';
@@ -113,7 +113,7 @@ const Header: React.FC = () => {
                   justifyContent: 'center',
                 }}
               >
-                <Storefront sx={{ fontSize: 28, color: '#ffffff' }} />
+                <ShoppingBag sx={{ fontSize: 28, color: '#ffffff' }} />
               </Box>
               <Box>
                 <Typography
@@ -447,7 +447,7 @@ const Header: React.FC = () => {
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Storefront sx={{ fontSize: 28, color: '#3b82f6', mr: 1.5 }} />
+            <ShoppingBag sx={{ fontSize: 28, color: '#3b82f6', mr: 1.5 }} />
             <Typography variant="h6" sx={{ fontWeight: 800 }}>
               CodeShop
             </Typography>
