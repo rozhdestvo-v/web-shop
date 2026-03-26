@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Фон - скруглённый квадрат -->
+  <rect x="5" y="5" width="90" height="90" rx="18" fill="url(#bg)"/>
+  
+  <!-- Иконка ShoppingBag -->
+  <g fill="white">
+    <!-- Тело сумки -->
+    <path d="M 20 45 L 20 85 L 80 85 L 80 45 Z" fill="white"/>
+    
+    <!-- Ручки -->
+    <path d="M 35 45 L 35 35 C 35 25 45 20 50 20 C 55 20 65 25 65 35 L 65 45" 
+          stroke="white" 
+          stroke-width="8" 
+          fill="none" 
+          stroke-linecap="round"/>
+    
+    <!-- Боковые части -->
+    <rect x="20" y="45" width="10" height="40" rx="3" fill="white"/>
+    <rect x="70" y="45" width="10" height="40" rx="3" fill="white"/>
+  </g>
+</svg>

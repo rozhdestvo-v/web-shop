@@ -179,15 +179,7 @@ const HomePage: React.FC = () => {
             </Typography>
 
             {/* Кнопки */}
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                mb: 4,
-              }}
-            >
+            <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
               <GlassButton
                 variant="contained"
                 size="large"
@@ -199,7 +191,19 @@ const HomePage: React.FC = () => {
                   fontSize: { xs: '1rem', md: '1.125rem' },
                   background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                   boxShadow: '0 8px 30px rgba(59, 130, 246, 0.4)',
-                  
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: { xs: '140px', sm: '180px', md: '220px' },
+                  maxWidth: { xs: '200px', sm: '240px', md: '280px' },
+                  flex: { xs: '0 0 calc(33.333% - 8px)', sm: '0 0 calc(33.333% - 12px)' },
+
+                  '& .MuiButton-startIcon': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+
                   '&:hover': {
                     background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
                     boxShadow: '0 12px 40px rgba(59, 130, 246, 0.5)',
@@ -212,14 +216,19 @@ const HomePage: React.FC = () => {
               <GlassButton
                 variant="outlined"
                 size="large"
-                onClick={() => navigate('/catalog')}
+                onClick={() => navigate('/cart')}
                 sx={{
                   px: 5,
                   py: 2,
                   fontSize: { xs: '1rem', md: '1.125rem' },
                   borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(59,130,246,0.4)',
                   color: isDark ? '#f8fafc' : '#3b82f6',
-                  
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: { xs: '140px', sm: '180px', md: '220px' },
+                  maxWidth: { xs: '200px', sm: '240px', md: '280px' },
+
                   '&:hover': {
                     background: isDark
                       ? 'rgba(59, 130, 246, 0.15)'
@@ -229,15 +238,15 @@ const HomePage: React.FC = () => {
                   },
                 }}
               >
-                Узнать больше
+                В корзину
               </GlassButton>
-            </Box>
+            </Grid>
 
             {/* Статистика */}
             <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
               {[
-                { value: '1000+', label: 'Товаров' },
-                { value: '5000+', label: 'Клиентов' },
+                { value: '100+', label: 'Товаров' },
+                { value: '50+', label: 'Клиентов' },
                 { value: '99%', label: 'Довольны' },
               ].map((stat, index) => (
                 <Grid key={index} size={{ xs: 4, md: 2 }}>

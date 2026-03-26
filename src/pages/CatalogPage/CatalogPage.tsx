@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Container, Typography, Box, Grid, TextField, InputAdornment, Slider, Checkbox } from '@mui/material';
 import { Search, Tune, FilterList, Sort } from '@mui/icons-material';
+import { useSearchParams } from 'react-router-dom';
 import { GlassCard, GlassButton, ProductCard } from '../../components';
 import { products, categories } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -10,12 +11,21 @@ const CatalogPage: React.FC = () => {
   const { addToCart } = useCart();
   const { mode } = useTheme();
   const isDark = mode === 'dark';
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 150000]);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'name'>('popular');
   const [showInStock, setShowInStock] = useState(false);
+
+  // Синхронизация searchQuery с query-параметром из URL
+  useEffect(() => {
+    const searchParam = searchParams.get('search');
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
+  }, [searchParams]);
 
   // Фильтрация товаров
   const filteredProducts = useMemo(() => {
@@ -144,7 +154,17 @@ const CatalogPage: React.FC = () => {
           <TextField
             placeholder="Поиск товаров..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setSearchQuery(newValue);
+              // Обновляем URL параметр
+              if (newValue.trim()) {
+                searchParams.set('search', newValue.trim());
+              } else {
+                searchParams.delete('search');
+              }
+              setSearchParams(searchParams);
+            }}
             fullWidth
             sx={{
               flexGrow: 1,

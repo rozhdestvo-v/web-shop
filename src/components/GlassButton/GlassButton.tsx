@@ -99,13 +99,19 @@ const GlassButton: React.FC<GlassButtonProps> = ({
     // Transition - GPU accelerated
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     willChange: 'transform, box-shadow, background',
-    
-    // Icon spacing
+
+    // Icon spacing - can be overridden via sx prop
     '& .MuiButton-startIcon': {
       marginRight: size === 'small' ? 6 : 8,
+      '& > *:nth-of-type(1)': {
+        fontSize: size === 'small' ? 18 : 20,
+      },
     },
     '& .MuiButton-endIcon': {
       marginLeft: size === 'small' ? 6 : 8,
+      '& > *:nth-of-type(1)': {
+        fontSize: size === 'small' ? 18 : 20,
+      },
     },
   };
 

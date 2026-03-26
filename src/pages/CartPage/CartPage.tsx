@@ -199,7 +199,7 @@ const CartPage: React.FC = () => {
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: { xs: 'space-between', sm: 'flex-start' },
+                        justifyContent: { xs: 'space-between', sm: 'space-between' },
                         gap: 1,
                         background: isDark
                           ? 'rgba(255, 255, 255, 0.05)'
@@ -565,7 +565,7 @@ const CartPage: React.FC = () => {
                 background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                 boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)',
                 fontSize: '1.05rem',
-                
+
                 '&:hover': {
                   background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
                   boxShadow: '0 12px 32px rgba(59, 130, 246, 0.5)',
@@ -584,7 +584,7 @@ const CartPage: React.FC = () => {
                 py: 2,
                 borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(59,130,246,0.4)',
                 color: isDark ? '#f8fafc' : '#3b82f6',
-                
+
                 '&:hover': {
                   background: isDark
                     ? 'rgba(59, 130, 246, 0.1)'

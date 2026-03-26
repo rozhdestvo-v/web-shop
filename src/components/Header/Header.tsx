@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton, Badge, Drawer, List, ListItem, ListItemText, ListItemButton, InputBase } from '@mui/material';
-import { ShoppingCart, Menu, Close, ShoppingBag, AccountCircle, Brightness4, Brightness7, Search as SearchIcon, KeyboardArrowRight } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, Menu, Close, ShoppingBag, AccountCircle, Brightness4, Brightness7, Search as SearchIcon } from '@mui/icons-material';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import GlassButton from '../GlassButton/GlassButton';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -9,12 +9,23 @@ import { useTheme } from '../../context/ThemeContext';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { getTotalItems } = useCart();
   const { mode, toggleTheme } = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const isDark = mode === 'dark';
+
+  // Синхронизация searchQuery с query-параметром из URL
+  useEffect(() => {
+    const searchParam = searchParams.get('search');
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    } else {
+      setSearchQuery('');
+    }
+  }, [searchParams, location.pathname]);
 
   // Эффект скролла для изменения прозрачности хедера
   useEffect(() => {
@@ -213,12 +224,12 @@ const Header: React.FC = () => {
               })}
             </Box>
 
-            {/* Поиск для десктопа */}
+            {/* Поиск для десктопа - скрываем в каталоге */}
             <Box
               component="form"
               onSubmit={handleSearch}
               sx={{
-                display: { xs: 'none', lg: 'flex' },
+                display: location.pathname === '/catalog' ? 'none' : { xs: 'none', lg: 'flex' },
                 flexGrow: 0.5,
                 maxWidth: '400px',
                 mx: 2,
@@ -319,7 +330,7 @@ const Header: React.FC = () => {
                   color: '#ffffff',
                   border: 'none',
                   transition: 'all 0.3s ease',
-                  
+
                   '&:hover': {
                     transform: 'scale(1.1)',
                     boxShadow: '0 8px 24px rgba(59, 130, 246, 0.5)',
@@ -352,14 +363,13 @@ const Header: React.FC = () => {
               <IconButton
                 onClick={() => navigate('/profile')}
                 sx={{
-                  display: { xs: 'none', xl: 'flex' },
                   background: isDark
                     ? 'rgba(255, 255, 255, 0.08)'
                     : 'rgba(59, 130, 246, 0.1)',
                   border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(59, 130, 246, 0.3)'}`,
                   color: isDark ? '#f8fafc' : '#475569',
                   transition: 'all 0.3s ease',
-                  
+
                   '&:hover': {
                     background: isDark
                       ? 'rgba(255, 255, 255, 0.15)'
@@ -371,27 +381,6 @@ const Header: React.FC = () => {
               >
                 <AccountCircle />
               </IconButton>
-
-              {/* CTA кнопка */}
-              <GlassButton
-                variant="contained"
-                size="medium"
-                onClick={() => navigate('/catalog')}
-                sx={{
-                  display: { xs: 'none', md: 'flex' },
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                  boxShadow: '0 4px 20px rgba(59, 130, 246, 0.4)',
-                  
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
-                    transform: 'translateY(-3px) scale(1.02)',
-                    boxShadow: '0 8px 30px rgba(59, 130, 246, 0.5)',
-                  },
-                }}
-              >
-                Купить
-                <KeyboardArrowRight />
-              </GlassButton>
 
               {/* Мобильное меню */}
               <IconButton
@@ -465,11 +454,18 @@ const Header: React.FC = () => {
           </IconButton>
         </Box>
 
-        {/* Поиск в мобильном меню */}
+        {/* Поиск в мобильном меню - скрываем в каталоге */}
+        {location.pathname !== '/catalog' && (
         <Box sx={{ p: 2.5 }}>
           <Box
             component="form"
-            onSubmit={handleSearch}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim()) {
+                navigate(`/catalog?search=${encodeURIComponent(searchQuery.trim())}`);
+                setDrawerOpen(false);
+              }
+            }}
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -491,6 +487,7 @@ const Header: React.FC = () => {
             />
           </Box>
         </Box>
+        )}
 
         {/* Навигация */}
         <List sx={{ px: 2, py: 1 }}>

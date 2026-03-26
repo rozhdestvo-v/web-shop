@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Grid, Rating, IconButton, Paper, Chip, Divider, Table, TableBody, TableCell, TableRow, TableContainer } from '@mui/material';
+import { Container, Typography, Box, Grid, Rating, IconButton, Paper, Chip, Divider, Table, TableBody, TableCell, TableRow, TableContainer, Snackbar } from '@mui/material';
 import {
   AddShoppingCart,
   FavoriteBorder,
@@ -20,21 +20,41 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { GlassCard, GlassButton } from '../../components';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import { useFavorites } from '../../context/FavoritesContext';
 import { useTheme } from '../../context/ThemeContext';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const { mode } = useTheme();
   const isDark = mode === 'dark';
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
   const [helpfulReviews, setHelpfulReviews] = useState<number[]>([]);
+  const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
 
   const product = products.find((p) => p.id === Number(id));
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShareSnackbarOpen(true);
+    } catch (err) {
+      // Fallback для старых браузеров
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setShareSnackbarOpen(true);
+    }
+  };
 
   if (!product) {
     return (
@@ -228,7 +248,9 @@ const ProductPage: React.FC = () => {
           sx={{
             borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(59,130,246,0.4)',
             color: isDark ? '#f8fafc' : '#3b82f6',
-            
+            '& .MuiButton-startIcon': {
+  marginRight: '8px',
+},
             '&:hover': {
               background: isDark
                 ? 'rgba(59, 130, 246, 0.1)'
@@ -537,7 +559,9 @@ const ProductPage: React.FC = () => {
                     boxShadow: addedToCart
                       ? '0 4px 16px rgba(16, 185, 129, 0.4)'
                       : '0 4px 16px rgba(59, 130, 246, 0.4)',
-                    
+                    '& .MuiButton-startIcon': {
+                      marginRight: '8px',
+                    },
                     '&:hover': {
                       background: addedToCart
                         ? 'linear-gradient(135deg, #34d399 0%, #10b981 100%)'
@@ -551,20 +575,24 @@ const ProductPage: React.FC = () => {
 
                 {/* В избранное */}
                 <IconButton
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  onClick={() => {
+                    if (product) {
+                      toggleFavorite(product);
+                    }
+                  }}
                   sx={{
-                    background: isFavorite
+                    background: isFavorite(product?.id || 0)
                       ? 'rgba(239, 68, 68, 0.15)'
                       : isDark
                         ? 'rgba(255, 255, 255, 0.08)'
                         : 'rgba(59, 130, 246, 0.1)',
-                    border: `1px solid ${isFavorite ? '#ef4444' : isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(59, 130, 246, 0.3)'}`,
-                    color: isFavorite ? '#ef4444' : isDark ? '#f8fafc' : '#475569',
+                    border: `1px solid ${isFavorite(product?.id || 0) ? '#ef4444' : isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(59, 130, 246, 0.3)'}`,
+                    color: isFavorite(product?.id || 0) ? '#ef4444' : isDark ? '#f8fafc' : '#475569',
                     width: 52,
                     height: 52,
-                    
+
                     '&:hover': {
-                      background: isFavorite
+                      background: isFavorite(product?.id || 0)
                         ? 'rgba(239, 68, 68, 0.25)'
                         : isDark
                           ? 'rgba(255, 255, 255, 0.15)'
@@ -574,11 +602,12 @@ const ProductPage: React.FC = () => {
                     },
                   }}
                 >
-                  {isFavorite ? <Favorite /> : <FavoriteBorder />}
+                  {isFavorite(product?.id || 0) ? <Favorite /> : <FavoriteBorder />}
                 </IconButton>
 
                 {/* Поделиться */}
                 <IconButton
+                  onClick={handleShare}
                   sx={{
                     background: isDark
                       ? 'rgba(255, 255, 255, 0.08)'
@@ -587,7 +616,7 @@ const ProductPage: React.FC = () => {
                     color: isDark ? '#f8fafc' : '#475569',
                     width: 52,
                     height: 52,
-                    
+
                     '&:hover': {
                       background: isDark
                         ? 'rgba(255, 255, 255, 0.15)'
@@ -1094,6 +1123,34 @@ const ProductPage: React.FC = () => {
           </Box>
         </GlassCard>
       </Box>
+
+      {/* Уведомление о копировании ссылки */}
+      <Snackbar
+        open={shareSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setShareSnackbarOpen(false)}
+        message={
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Check sx={{ color: '#10b981', fontSize: 24 }} />
+            <Typography sx={{ color: isDark ? '#f8fafc' : '#1e293b', fontWeight: 500 }}>
+              Ссылка скопирована в буфер обмена
+            </Typography>
+          </Box>
+        }
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            background: isDark
+              ? 'rgba(30, 30, 60, 0.95)'
+              : 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)',
+            border: isDark
+              ? '1px solid rgba(255, 255, 255, 0.15)'
+              : '1px solid rgba(59, 130, 246, 0.2)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+            borderRadius: '14px',
+          },
+        }}
+      />
     </Container>
   );
 };

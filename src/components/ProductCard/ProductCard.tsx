@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, CardMedia, CardContent, Stack, Chip } from '@mui/material';
 import { AddShoppingCart, FavoriteBorder, Favorite, Star } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../GlassCard/GlassCard';
 import GlassButton from '../GlassButton/GlassButton';
 import { useTheme } from '../../context/ThemeContext';
+import { useFavorites } from '../../context/FavoritesContext';
 
 export interface Product {
   id: number;
@@ -22,21 +23,18 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
-  onFavorite?: (product: Product) => void;
   index?: number;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onAddToCart,
-  onFavorite,
   index = 0,
 }) => {
   const navigate = useNavigate();
   const { mode } = useTheme();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const isDark = mode === 'dark';
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const discount = product.oldPrice
     ? Math.round((1 - product.price / product.oldPrice) * 100)
@@ -119,8 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Box
         onClick={(e) => {
           e.stopPropagation();
-          setIsFavorite(!isFavorite);
-          onFavorite?.(product);
+          toggleFavorite(product);
         }}
         sx={{
           position: 'absolute',
@@ -142,7 +139,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           border: isDark
             ? '1px solid rgba(255, 255, 255, 0.15)'
             : '1px solid rgba(59, 130, 246, 0.2)',
-          
+
           '&:hover': {
             transform: 'scale(1.15) rotate(15deg)',
             background: isDark
@@ -152,7 +149,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           },
         }}
       >
-        {isFavorite ? (
+        {isFavorite(product.id) ? (
           <Favorite sx={{ fontSize: 20, color: '#ef4444' }} />
         ) : (
           <FavoriteBorder
@@ -180,31 +177,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           image={product.image}
           alt={product.name}
           className="product-image"
-          onLoad={() => setImageLoaded(true)}
           sx={{
             objectFit: 'cover',
             transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-            opacity: imageLoaded ? 1 : 0,
           }}
         />
-        
-        {/* Skeleton loader */}
-        {!imageLoaded && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: isDark
-                ? 'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)'
-                : 'linear-gradient(90deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.06) 50%, rgba(0,0,0,0.03) 100%)',
-              backgroundSize: '200% 100%',
-              animation: 'shimmer 1.5s infinite',
-            }}
-          />
-        )}
 
         {/* Кнопка "В корзину" появляется при hover */}
         <Box
