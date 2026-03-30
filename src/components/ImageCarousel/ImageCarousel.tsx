@@ -24,7 +24,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const isControlled = propCurrentIndex !== undefined;
 
-  // Используем внешнее значение, если передано
+  // Используем внешнее значение, если передано 
   const effectiveIndex = isControlled && propCurrentIndex !== undefined 
     ? propCurrentIndex 
     : currentIndex;
