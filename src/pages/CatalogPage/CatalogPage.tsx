@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Container, Typography, Box, Grid, TextField, InputAdornment, Slider, Checkbox } from '@mui/material';
+import { Container, Typography, Box, Grid, TextField, InputAdornment, Slider } from '@mui/material';
 import { Search, Tune, FilterList, Sort } from '@mui/icons-material';
 import { useSearchParams } from 'react-router-dom';
 import { GlassCard, GlassButton, ProductCard } from '../../components';
