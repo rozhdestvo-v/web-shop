@@ -439,7 +439,7 @@ const CatalogPage: React.FC = () => {
             </GlassCard>
 
             {/* Фильтр "В наличии" */}
-            <GlassCard
+            {/* <GlassCard
               elevation="medium"
               sx={{
                 p: 2,
@@ -480,7 +480,7 @@ const CatalogPage: React.FC = () => {
                   В наличии
                 </Typography>
               </Box>
-            </GlassCard>
+            </GlassCard> */}
 
             {/* Сортировка */}
             <GlassCard

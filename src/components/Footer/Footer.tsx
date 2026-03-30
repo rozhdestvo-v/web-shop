@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
           </Box>
 
           {/* Навигация */}
-          <Box sx={{ display: 'flex', gap: 0.5 }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 0.5 }}>
             <Link
               onClick={() => navigate('/catalog')}
               sx={{
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
                 fontSize: '0.875rem',
                 textDecoration: 'none',
                 transition: 'all 0.3s ease',
-                
+
                 '&:hover': {
                   background: isDark
                     ? 'rgba(59, 130, 246, 0.15)'

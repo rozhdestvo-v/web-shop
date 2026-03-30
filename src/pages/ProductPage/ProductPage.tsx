@@ -22,6 +22,7 @@ import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import { useFavorites } from '../../context/FavoritesContext';
 import { useTheme } from '../../context/ThemeContext';
+import ImageCarousel from '../../components/ImageCarousel/ImageCarousel';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,8 +36,18 @@ const ProductPage: React.FC = () => {
   const [addedToCart, setAddedToCart] = useState(false);
   const [helpfulReviews, setHelpfulReviews] = useState<number[]>([]);
   const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const product = products.find((p) => p.id === Number(id));
+
+  // Получаем массив изображений или используем одно изображение
+  const images = product?.images && product.images.length > 0
+    ? product.images
+    : [product?.image || ''];
+
+  const handleImageSelect = (index: number) => {
+    setSelectedImageIndex(index);
+  };
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -273,59 +284,55 @@ const ProductPage: React.FC = () => {
               animation: 'slide-right 0.5s ease-out 0.1s forwards',
             }}
           >
+            {/* Основное изображение с каруселью */}
             <GlassCard elevation="high" sx={{ overflow: 'hidden', mb: 2 }}>
-              <Box
-                component="img"
-                src={product.image}
+              <ImageCarousel
+                images={images}
                 alt={product.name}
-                sx={{
-                  width: '100%',
-                  aspectRatio: '4/3',
-                  objectFit: 'cover',
-                  transition: 'transform 0.5s ease',
-                  
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
+                height={500}
+                currentIndex={selectedImageIndex}
+                onImageChange={setSelectedImageIndex}
               />
             </GlassCard>
 
             {/* Миниатюры */}
-            <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
-              {[1, 2, 3, 4].map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    border: index === 0
-                      ? '2px solid #3b82f6'
-                      : isDark
-                        ? '1px solid rgba(255, 255, 255, 0.1)'
-                        : '1px solid rgba(59, 130, 246, 0.2)',
-                    cursor: 'pointer',
-                    opacity: index === 0 ? 1 : 0.6,
-                    transition: 'all 0.3s ease',
-                    
-                    '&:hover': {
-                      opacity: 1,
-                      transform: 'scale(1.05)',
-                      borderColor: '#3b82f6',
-                    },
-                  }}
-                >
+            {images.length > 1 && (
+              <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                {images.map((img, index) => (
                   <Box
-                    component="img"
-                    src={product.image}
-                    alt=""
-                    sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </Box>
-              ))}
-            </Box>
+                    key={index}
+                    onClick={() => handleImageSelect(index)}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      border: index === selectedImageIndex
+                        ? '2px solid #3b82f6'
+                        : isDark
+                          ? '1px solid rgba(255, 255, 255, 0.1)'
+                          : '1px solid rgba(59, 130, 246, 0.2)',
+                      cursor: 'pointer',
+                      opacity: index === selectedImageIndex ? 1 : 0.6,
+                      transition: 'all 0.3s ease',
+
+                      '&:hover': {
+                        opacity: 1,
+                        transform: 'scale(1.05)',
+                        borderColor: '#3b82f6',
+                      },
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={img}
+                      alt={`${product.name} - ${index + 1}`}
+                      sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
         </Grid>
 

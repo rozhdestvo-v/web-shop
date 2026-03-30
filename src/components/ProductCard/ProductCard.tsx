@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Typography, CardMedia, CardContent, Stack, Chip } from '@mui/material';
+import { Box, Typography, CardContent, Stack, Chip } from '@mui/material';
 import { AddShoppingCart, FavoriteBorder, Favorite, Star } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../GlassCard/GlassCard';
 import GlassButton from '../GlassButton/GlassButton';
 import { useTheme } from '../../context/ThemeContext';
 import { useFavorites } from '../../context/FavoritesContext';
+import ImageCarousel from '../ImageCarousel/ImageCarousel';
 
 export interface Product {
   id: number;
@@ -13,6 +14,7 @@ export interface Product {
   price: number;
   oldPrice?: number;
   image: string;
+  images?: string[];
   category: string;
   rating?: number;
   description?: string;
@@ -36,6 +38,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { isFavorite, toggleFavorite } = useFavorites();
   const isDark = mode === 'dark';
 
+  // Получаем массив изображений или используем одно изображение
+  const images = product.images && product.images.length > 0
+    ? product.images
+    : [product.image];
+
   const discount = product.oldPrice
     ? Math.round((1 - product.price / product.oldPrice) * 100)
     : 0;
@@ -52,20 +59,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
         overflow: 'hidden',
         position: 'relative',
         cursor: 'pointer',
-        
+
         // Staggered animation
         opacity: 0,
         animation: 'fade-in 0.5s ease-out forwards',
         animationDelay: `${index * 0.08}s`,
-        
-        '&:hover .product-image': {
-          transform: 'scale(1.1)',
-        },
-        
-        '&:hover .add-to-cart-btn': {
-          opacity: 1,
-          transform: 'translateY(0)',
-        },
       }}
     >
       {/* Бейдж скидки */}
@@ -161,7 +159,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
       </Box>
 
-      {/* Изображение с эффектом загрузки */}
+      {/* Изображение с каруселью */}
       <Box
         sx={{
           position: 'relative',
@@ -171,54 +169,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             : '1px solid rgba(59, 130, 246, 0.1)',
         }}
       >
-        <CardMedia
-          component="img"
-          height="220"
-          image={product.image}
+        <ImageCarousel
+          images={images}
           alt={product.name}
-          className="product-image"
-          sx={{
-            objectFit: 'cover',
-            transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
+          height={220}
         />
-
-        {/* Кнопка "В корзину" появляется при hover */}
-        <Box
-          className="add-to-cart-btn"
-          sx={{
-            position: 'absolute',
-            bottom: 12,
-            left: 12,
-            right: 12,
-            opacity: 0,
-            transform: 'translateY(10px)',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        >
-          <GlassButton
-            variant="contained"
-            size="small"
-            fullWidth
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
-              onAddToCart?.(product);
-            }}
-            sx={{
-              py: 1.2,
-              background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-              boxShadow: '0 4px 16px rgba(59, 130, 246, 0.4)',
-              
-              '&:hover': {
-                background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
-                boxShadow: '0 8px 24px rgba(59, 130, 246, 0.5)',
-              },
-            }}
-          >
-            <AddShoppingCart sx={{ mr: 1, fontSize: 18 }} />
-            В корзину
-          </GlassButton>
-        </Box>
       </Box>
 
       {/* Контент карточки */}
@@ -318,7 +273,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Box>
         )}
 
-        {/* Цена и кнопка (для мобильных) */}
+        {/* Цена и кнопка */}
         <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="space-between">
           <Box>
             <Typography
@@ -350,28 +305,28 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </Box>
 
-          {/* Кнопка для мобильных - всегда видна */}
-          <Box
+          {/* Кнопка "В корзину" */}
+          <GlassButton
+            variant="contained"
+            size="small"
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              onAddToCart?.(product);
+            }}
             sx={{
-              display: { xs: 'flex', sm: 'none' },
+              minWidth: 'auto',
+              p: 1.2,
+              background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+              boxShadow: '0 4px 16px rgba(59, 130, 246, 0.4)',
+
+              '&:hover': {
+                background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
+                boxShadow: '0 8px 24px rgba(59, 130, 246, 0.5)',
+              },
             }}
           >
-            <GlassButton
-              variant="contained"
-              size="small"
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                onAddToCart?.(product);
-              }}
-              sx={{
-                minWidth: 'auto',
-                p: 1.2,
-                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-              }}
-            >
-              <AddShoppingCart fontSize="small" />
-            </GlassButton>
-          </Box>
+            <AddShoppingCart fontSize="small" />
+          </GlassButton>
         </Stack>
       </CardContent>
     </GlassCard>
