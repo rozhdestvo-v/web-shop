@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Typography, Box, Grid, Rating, IconButton, Paper, Chip, Divider, Table, TableBody, TableCell, TableRow, TableContainer, Snackbar } from '@mui/material';
 import {
   AddShoppingCart,
@@ -37,30 +37,12 @@ const ProductPage: React.FC = () => {
   const [helpfulReviews, setHelpfulReviews] = useState<number[]>([]);
   const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [animationComplete, setAnimationComplete] = useState(false);
-
   const product = products.find((p) => p.id === Number(id));
 
   // Получаем массив изображений или используем одно изображение
   const images = product?.images && product.images.length > 0
     ? product.images
     : [product?.image || ''];
-
-  // Загружаем изображения для обеспечения их доступности
-  useEffect(() => {
-    if (product) {
-      const imgPromises = images.map(src => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = reject;
-          img.src = src;
-        });
-      });
-
-      Promise.all(imgPromises).catch(error => console.error('Ошибка загрузки изображений:', error));
-    }
-  }, [product, images]);
 
   const handleImageSelect = (index: number) => {
     setSelectedImageIndex(index);

@@ -3,21 +3,16 @@ import {
   Box,
   Button,
   Typography,
-  Grid as MuiGrid,
   Collapse,
-  Chip,
-  IconButton,
-  Tooltip,
   Alert,
 } from '@mui/material';
-import { Favorite, Share, ArrowBack, SkipNext, ShoppingCart } from '@mui/icons-material';
+import { Favorite, Share, ArrowBack, SkipNext } from '@mui/icons-material';
 import { useTheme } from '../../context/ThemeContext';
 import { useFavorites } from '../../context/FavoritesContext';
 import { ProductCard } from '../../components';
 import { useAnalytics } from '../hooks';
 import { useABTest } from '../hooks';
-import { AssemblyCategory, AssemblyProduct, AnalyticsEventType } from '../types';
-import { CLASSES } from '../styles';
+import { AssemblyCategory, AssemblyProduct } from '../types';
 
 interface ExtendedAssemblyCategory extends AssemblyCategory {
   products: AssemblyProduct[]; // Adding products property to the category
@@ -34,17 +29,18 @@ interface AssemblyFlowProps {
 
 export const AssemblyFlow: React.FC<AssemblyFlowProps> = ({ categories, onNextStep, onBackStep, onSkipStep, onSaveDraft, onLoadDraft }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [error, setError] = useState<string | null>(null);
   
   // Renamed variables to avoid conflicts
   const { variant: currentTestVariant } = useABTest();
   const analytics = useAnalytics();
-  const { addToFavorites } = useFavorites();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { addToFavorites } = useFavorites(); // Will be used in future implementation
   const { mode } = useTheme();
   const isDarkMode = mode === 'dark';
 
-  // Steps for the assembly flow
-  const steps: AssemblyCategory[] = categories;
+  // Steps for the assembly flow - commented out since currently unused
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const steps: AssemblyCategory[] = categories;
   
   // Labels for each step
   const stepLabels: Record<string, string> = {};

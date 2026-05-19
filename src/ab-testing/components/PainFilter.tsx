@@ -3,11 +3,6 @@ import {
   Box,
   Chip,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
 } from '@mui/material';
 import { useTheme } from '../../context/ThemeContext';
 import { PainTag } from '../types';
@@ -58,7 +53,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
   const { mode } = useTheme();
   const isDark = mode === 'dark';
 
-  const handleToggleTag = (tag: PainTag) => {
+  const handleTagToggle = (tag: PainTag) => {
     if (value.includes(tag)) {
       onChange(value.filter(t => t !== tag));
     } else {
@@ -99,7 +94,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
               </Box>
             }
             clickable
-            onClick={() => handleToggleTag(tag)}
+            onClick={() => handleTagToggle(tag)}
             variant={value.includes(tag) ? 'filled' : 'outlined'}
             sx={{
               backgroundColor: value.includes(tag) 
@@ -153,7 +148,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
                   </Box>
                 }
                 size="small"
-                onDelete={() => handleToggleTag(tag)}
+                onDelete={() => handleTagToggle(tag)}
                 sx={{ 
                   backgroundColor: isDark ? '#1e3a8a' : '#eff6ff',
                   color: isDark ? '#93c5fd' : '#1d4ed8',

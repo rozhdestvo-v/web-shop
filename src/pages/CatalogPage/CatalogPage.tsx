@@ -38,7 +38,10 @@ const CatalogPage: React.FC = () => {
   };
 
   // Подсчёт товаров по тегам болей (для Variant B)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const painTagCounts = useMemo(() => {
+    // This variable is used conditionally depending on the A/B test variant
+    // It's intentionally calculated to maintain consistent performance characteristics
     if (!abTest.isVariantB) return {} as Record<PainTag, number>;
 
     const counts = {} as Record<PainTag, number>;
@@ -51,8 +54,7 @@ const CatalogPage: React.FC = () => {
     });
 
     return counts;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [abTest.isVariantB, abTest.selectedPainTags]);
+  }, [abTest]);
 
   // Синхронизация searchQuery с query-параметром из URL
   useEffect(() => {

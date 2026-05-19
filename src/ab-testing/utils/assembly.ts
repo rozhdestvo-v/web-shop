@@ -5,7 +5,7 @@ import { ASSEMBLY_EXPERIMENT_CONFIG, ASSEMBLY_FEATURE_FLAG } from '../config/ass
 // Import from the correct file
 import { AssemblyFeatureFlag } from '../types/featureFlag';
 import { AssemblyExperimentConfig } from '../types/assembly';
-import { getFeatureFlagState, assignVariant } from './abTest';
+import { assignVariant } from './abTest';
 import { ABVariant } from '../types';
 
 /** Get the current experiment configuration */
