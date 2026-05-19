@@ -7,7 +7,7 @@ import { products, categories } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
 // A/B Testing imports
-import { useABTest, useAnalytics, PainFilter, PainTag } from '../../ab-testing';
+import { useABTest, useAnalytics, PainFilter } from '../../ab-testing';
 
 const CatalogPage: React.FC = () => {
   const { addToCart } = useCart();
@@ -36,25 +36,6 @@ const CatalogPage: React.FC = () => {
     );
     addToCart(product);
   };
-
-  // Подсчёт товаров по тегам болей (для Variant B)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const painTagCounts = useMemo(() => {
-    // This variable is used conditionally depending on the A/B test variant
-    // It's intentionally calculated to maintain consistent performance characteristics
-    if (!abTest.isVariantB) return {} as Record<PainTag, number>;
-
-    const counts = {} as Record<PainTag, number>;
-
-    products.forEach((product) => {
-      const tags = abTest.getProductPainTags(product.id);
-      tags.forEach((tag) => {
-        counts[tag] = (counts[tag] || 0) + 1;
-      });
-    });
-
-    return counts;
-  }, [abTest]);
 
   // Синхронизация searchQuery с query-параметром из URL
   useEffect(() => {
@@ -124,7 +105,7 @@ const CatalogPage: React.FC = () => {
     }
 
     return result;
-  }, [selectedCategory, searchQuery, priceRange, sortBy, showInStock]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedCategory, searchQuery, priceRange, sortBy, showInStock, abTest.selectedPainTags, abTest.isVariantB, abTest.filterProductsByPainTags]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

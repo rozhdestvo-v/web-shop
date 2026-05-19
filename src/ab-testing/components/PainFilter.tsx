@@ -53,7 +53,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
   const { mode } = useTheme();
   const isDark = mode === 'dark';
 
-  const handleTagToggle = (tag: PainTag) => {
+  const handleToggleTag = (tag: PainTag) => {
     if (value.includes(tag)) {
       onChange(value.filter(t => t !== tag));
     } else {
@@ -94,7 +94,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
               </Box>
             }
             clickable
-            onClick={() => handleTagToggle(tag)}
+            onClick={() => handleToggleTag(tag)}
             variant={value.includes(tag) ? 'filled' : 'outlined'}
             sx={{
               backgroundColor: value.includes(tag) 
@@ -148,7 +148,7 @@ export const PainFilter: React.FC<PainFilterProps> = ({
                   </Box>
                 }
                 size="small"
-                onDelete={() => handleTagToggle(tag)}
+                onDelete={() => handleToggleTag(tag)}
                 sx={{ 
                   backgroundColor: isDark ? '#1e3a8a' : '#eff6ff',
                   color: isDark ? '#93c5fd' : '#1d4ed8',

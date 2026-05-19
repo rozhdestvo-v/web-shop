@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { Favorite, Share, ArrowBack, SkipNext } from '@mui/icons-material';
 import { useTheme } from '../../context/ThemeContext';
-import { useFavorites } from '../../context/FavoritesContext';
 import { ProductCard } from '../../components';
 import { useAnalytics } from '../hooks';
 import { useABTest } from '../hooks';
@@ -33,15 +32,9 @@ export const AssemblyFlow: React.FC<AssemblyFlowProps> = ({ categories, onNextSt
   // Renamed variables to avoid conflicts
   const { variant: currentTestVariant } = useABTest();
   const analytics = useAnalytics();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { addToFavorites } = useFavorites(); // Will be used in future implementation
   const { mode } = useTheme();
   const isDarkMode = mode === 'dark';
 
-  // Steps for the assembly flow - commented out since currently unused
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const steps: AssemblyCategory[] = categories;
-  
   // Labels for each step
   const stepLabels: Record<string, string> = {};
   categories.forEach(category => {
