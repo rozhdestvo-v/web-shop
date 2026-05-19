@@ -6,6 +6,8 @@ import { GlassCard, GlassButton, ProductCard } from '../../components';
 import { products, categories } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
+// A/B Testing imports
+import { useABTest, useAnalytics, PainFilter, PainTag } from '../../ab-testing';
 
 const CatalogPage: React.FC = () => {
   const { addToCart } = useCart();
@@ -19,6 +21,39 @@ const CatalogPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'name'>('popular');
   const [showInStock, setShowInStock] = useState(false);
 
+  // ─── A/B Test Integration ───────────────────────────────────────────────
+  const abTest = useABTest();
+  const analytics = useAnalytics();
+
+  // Обёртка addToCart с аналитикой
+  const handleAddToCart = (product: typeof products[0]) => {
+    const painTags = abTest.isVariantB ? abTest.getProductPainTags(product.id) : [];
+    analytics.trackAddToCart(
+      product.id,
+      product.name,
+      product.category,
+      painTags.length > 0 ? painTags[0] : undefined
+    );
+    addToCart(product);
+  };
+
+  // Подсчёт товаров по тегам болей (для Variant B)
+  const painTagCounts = useMemo(() => {
+    if (!abTest.isVariantB) return {} as Record<PainTag, number>;
+
+    const counts = {} as Record<PainTag, number>;
+
+    products.forEach((product) => {
+      const tags = abTest.getProductPainTags(product.id);
+      tags.forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
+    });
+
+    return counts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [abTest.isVariantB, abTest.selectedPainTags]);
+
   // Синхронизация searchQuery с query-параметром из URL
   useEffect(() => {
     const searchParam = searchParams.get('search');
@@ -31,8 +66,13 @@ const CatalogPage: React.FC = () => {
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Категория
-    if (selectedCategory !== 'all') {
+    // ─── A/B Test: Variant B (Pain Filter) vs Variant A (Category Filter) ──
+    if (abTest.isVariantB && abTest.selectedPainTags.length > 0) {
+      // Variant B: фильтрация по тегам болей
+      const filteredIds = abTest.filterProductsByPainTags(result.map((p) => p.id));
+      result = result.filter((p) => filteredIds.includes(p.id));
+    } else if (selectedCategory !== 'all') {
+      // Variant A: классическая фильтрация по категориям
       const categoryMap: Record<string, string[]> = {
         mousepads: ['Коврики'],
         keyboards: ['Клавиатуры'],
@@ -82,7 +122,7 @@ const CatalogPage: React.FC = () => {
     }
 
     return result;
-  }, [selectedCategory, searchQuery, priceRange, sortBy, showInStock]);
+  }, [selectedCategory, searchQuery, priceRange, sortBy, showInStock]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -244,19 +284,37 @@ const CatalogPage: React.FC = () => {
               zIndex: 10,
             }}
           >
-            {/* Категории */}
-            <GlassCard
-              elevation="medium"
-              sx={{
-                p: 2.5,
-                mb: 3,
-                opacity: 0,
-                animation: 'slide-down 0.5s ease-out 0.2s forwards',
-              }}
-            >
-              <Typography
-                variant="h6"
+            {/* A/B Test: Variant B — Pain Filter | Variant A — Category Filter */}
+            {abTest.isVariantB ? (
+              <GlassCard
+                elevation="medium"
                 sx={{
+                  p: 2.5,
+                  mb: 3,
+                  opacity: 0,
+                  animation: 'slide-down 0.5s ease-out 0.2s forwards',
+                }}
+              >
+                <PainFilter
+                  onChange={abTest.setSelectedPainTags}
+                  value={abTest.selectedPainTags}
+                  // showCounts={true}
+                  // tagCounts={painTagCounts}
+                />
+              </GlassCard>
+            ) : (
+              <GlassCard
+                elevation="medium"
+                sx={{
+                  p: 2.5,
+                  mb: 3,
+                  opacity: 0,
+                  animation: 'slide-down 0.5s ease-out 0.2s forwards',
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
                   fontWeight: 700,
                   color: isDark ? '#f8fafc' : '#1e293b',
                   mb: 2.5,
@@ -331,6 +389,7 @@ const CatalogPage: React.FC = () => {
                 })}
               </Box>
             </GlassCard>
+            )}
 
             {/* Цена */}
             <GlassCard
@@ -583,6 +642,27 @@ const CatalogPage: React.FC = () => {
 
         {/* Сетка товаров */}
         <Grid size={{ xs: 12, md: 9 }}>
+          {/* A/B Test Indicator Badge */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              mb: 2,
+              gap: 1,
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                color: isDark ? '#64748b' : '#94a3b8',
+                fontWeight: 500,
+              }}
+            >
+              {abTest.isVariantB ? '🧪 Variant B — Фильтр по задачам' : '🧪 Variant A — Классические категории'}
+            </Typography>
+          </Box>
+
           {filteredProducts.length > 0 ? (
             <Grid container spacing={2.5}>
               {filteredProducts.map((product, index) => (
@@ -597,7 +677,7 @@ const CatalogPage: React.FC = () => {
                 >
                   <ProductCard
                     product={product}
-                    onAddToCart={addToCart}
+                    onAddToCart={handleAddToCart}
                     index={index}
                   />
                 </Grid>
@@ -649,6 +729,10 @@ const CatalogPage: React.FC = () => {
                   setSearchQuery('');
                   setPriceRange([0, 150000]);
                   setShowInStock(false);
+                  // A/B Test: сброс pain tags
+                  if (abTest.isVariantB) {
+                    abTest.setSelectedPainTags([]);
+                  }
                 }}
                 sx={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',

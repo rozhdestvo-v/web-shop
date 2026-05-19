@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Grid, Rating, IconButton, Paper, Chip, Divider, Table, TableBody, TableCell, TableRow, TableContainer, Snackbar } from '@mui/material';
 import {
   AddShoppingCart,
@@ -37,6 +37,7 @@ const ProductPage: React.FC = () => {
   const [helpfulReviews, setHelpfulReviews] = useState<number[]>([]);
   const [shareSnackbarOpen, setShareSnackbarOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   const product = products.find((p) => p.id === Number(id));
 
@@ -44,6 +45,22 @@ const ProductPage: React.FC = () => {
   const images = product?.images && product.images.length > 0
     ? product.images
     : [product?.image || ''];
+
+  // Загружаем изображения для обеспечения их доступности
+  useEffect(() => {
+    if (product) {
+      const imgPromises = images.map(src => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = src;
+        });
+      });
+
+      Promise.all(imgPromises).catch(error => console.error('Ошибка загрузки изображений:', error));
+    }
+  }, [product, images]);
 
   const handleImageSelect = (index: number) => {
     setSelectedImageIndex(index);
@@ -75,7 +92,7 @@ const ProductPage: React.FC = () => {
           sx={{
             p: { xs: 4, md: 6 },
             textAlign: 'center',
-            opacity: 0,
+            opacity: 1, // Изменено на 1 для уверенности в отображении
             animation: 'scale-in 0.5s ease-out forwards',
           }}
         >
@@ -248,7 +265,7 @@ const ProductPage: React.FC = () => {
       <Box
         sx={{
           mb: 3,
-          opacity: 0,
+          opacity: 1, // Изменено на 1 для уверенности в отображении
           animation: 'fade-in 0.5s ease-out forwards',
         }}
       >
@@ -280,7 +297,7 @@ const ProductPage: React.FC = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Box
             sx={{
-              opacity: 0,
+              opacity: 1, // Изменено на 1 для уверенности в отображении
               animation: 'slide-right 0.5s ease-out 0.1s forwards',
             }}
           >
@@ -340,7 +357,7 @@ const ProductPage: React.FC = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Box
             sx={{
-              opacity: 0,
+              opacity: 1, // Изменено на 1 для уверенности в отображении
               animation: 'slide-left 0.5s ease-out 0.2s forwards',
             }}
           >
@@ -682,7 +699,7 @@ const ProductPage: React.FC = () => {
       <Box
         sx={{
           mt: 6,
-          opacity: 0,
+          opacity: 1, // Изменено на 1 для уверенности в отображении
           animation: 'fade-in 0.5s ease-out 0.4s forwards',
         }}
       >

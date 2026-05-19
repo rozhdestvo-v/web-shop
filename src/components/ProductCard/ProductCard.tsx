@@ -20,6 +20,7 @@ export interface Product {
   description?: string;
   reviews?: number;
   isNew?: boolean;
+  inStock?: boolean;
 }
 
 interface ProductCardProps {

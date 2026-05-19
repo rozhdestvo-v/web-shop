@@ -4,3 +4,4 @@ export { default as CartPage } from './CartPage/CartPage';
 export { default as ProductPage } from './ProductPage/ProductPage';
 export { default as ProfilePage } from './ProfilePage/ProfilePage';
 export { default as CheckoutPage } from './CheckoutPage/CheckoutPage';
+export { default as ABTestDashboardPage } from './ABTestDashboardPage/ABTestDashboardPage';

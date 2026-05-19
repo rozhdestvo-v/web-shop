@@ -4,8 +4,8 @@ import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { Header, Footer } from './components';
-import { HomePage, CatalogPage, CartPage, ProductPage, ProfilePage, CheckoutPage } from './pages';
-import './App.css';
+import { HomePage, CatalogPage, CartPage, ProductPage, ProfilePage, CheckoutPage, ABTestDashboardPage } from './pages';
+import './index';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +23,7 @@ const App: React.FC = () => {
                   <Route path="/product/:id" element={<ProductPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/ab-test-dashboard" element={<ABTestDashboardPage />} />
                 </Routes>
               </main>
               <Footer />
