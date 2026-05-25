@@ -25,7 +25,6 @@ const CartPage: React.FC = () => {
           sx={{
             p: { xs: 4, md: 6 },
             textAlign: 'center',
-            opacity: 0,
             animation: 'scale-in 0.5s ease-out forwards',
           }}
         >
@@ -100,7 +99,6 @@ const CartPage: React.FC = () => {
           textFillColor: 'transparent',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-          opacity: 0,
           animation: 'fade-in 0.5s ease-out forwards',
         }}
       >
@@ -113,14 +111,13 @@ const CartPage: React.FC = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
             {items.map((item, index) => (
               <GlassCard
-                key={item.id}
-                elevation="medium"
-                sx={{
-                  p: 2.5,
-                  opacity: 0,
-                  animation: 'slide-right 0.5s ease-out forwards',
-                  animationDelay: `${index * 0.1}s`,
-                }}
+              key={item.id}
+              elevation="medium"
+              sx={{
+                p: 2.5,
+                animation: 'slide-right 0.5s ease-out forwards',
+                animationDelay: `${index * 0.1}s`,
+              }}
               >
                 <Grid container spacing={2.5} alignItems="center">
                   {/* Изображение */}
@@ -304,7 +301,6 @@ const CartPage: React.FC = () => {
               alignItems: 'center',
               flexWrap: 'wrap',
               gap: 2,
-              opacity: 0,
               animation: 'fade-in 0.5s ease-out 0.5s forwards',
             }}
           >
@@ -343,7 +339,6 @@ const CartPage: React.FC = () => {
               p: 3,
               position: { lg: 'sticky' },
               top: 120,
-              opacity: 0,
               animation: 'slide-left 0.5s ease-out 0.3s forwards',
             }}
           >

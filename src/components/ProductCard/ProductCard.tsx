@@ -1,12 +1,11 @@
 import React from 'react';
 import { Box, Typography, CardContent, Stack, Chip } from '@mui/material';
-import { AddShoppingCart, FavoriteBorder, Favorite, Star } from '@mui/icons-material';
+import { Star } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../GlassCard/GlassCard';
-import GlassButton from '../GlassButton/GlassButton';
 import { useTheme } from '../../context/ThemeContext';
-import { useFavorites } from '../../context/FavoritesContext';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import { PAIN_TAGS_META, useABTest } from '../../ab-testing';
 
 export interface Product {
   id: number;
@@ -34,9 +33,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   index = 0,
 }) => {
+  const abTest = useABTest();
+  const firstPainTag = abTest.getProductPainTags(product.id)[0];
+  
   const navigate = useNavigate();
   const { mode } = useTheme();
-  const { isFavorite, toggleFavorite } = useFavorites();
   const isDark = mode === 'dark';
 
   // Получаем массив изображений или используем одно изображение
@@ -85,8 +86,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
             animation: 'pulse-glow 2s ease-in-out infinite',
           }}
-        >
-          -{discount}%
+        >{abTest.isVariantC && firstPainTag ? PAIN_TAGS_META[firstPainTag].label : `-${discount}%`}
         </Box>
       )}
 
@@ -113,7 +113,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       )}
 
       {/* Кнопка избранного */}
-      <Box
+      {/* <Box
         onClick={(e) => {
           e.stopPropagation();
           toggleFavorite(product);
@@ -158,7 +158,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             }}
           />
         )}
-      </Box>
+      </Box> */}
 
       {/* Изображение с каруселью */}
       <Box
@@ -307,7 +307,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Box>
 
           {/* Кнопка "В корзину" */}
-          <GlassButton
+          {/* <GlassButton
             variant="contained"
             size="small"
             onClick={(e: React.MouseEvent) => {
@@ -327,7 +327,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             }}
           >
             <AddShoppingCart fontSize="small" />
-          </GlassButton>
+          </GlassButton> */}
         </Stack>
       </CardContent>
     </GlassCard>

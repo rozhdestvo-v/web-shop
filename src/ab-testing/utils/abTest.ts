@@ -29,7 +29,7 @@ export const AB_TEST_CONFIG: ABTestConfig = {
   experimentId: 'pain-filter-v1',
   name: 'Pain-Based Filter vs Category Filter vs Assembly Flow',
   hypothesis: 'Фильтрация по «болям» клиента и сборка сетапа повышают CTR фильтров, глубину просмотра и конверсию в корзину',
-  trafficSplit: 0.33, // ~33% на каждый из 3 вариантов
+  trafficSplit: 0.5, // ~33% на каждый из 3 вариантов
   enabled: ENABLE_PAIN_FILTER_AB,
 };
 
