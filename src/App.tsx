@@ -8,8 +8,8 @@ import { HomePage, CatalogPage, CartPage, ProductPage, ProfilePage, CheckoutPage
 import './index';
 
 const App: React.FC = () => {
-  (window as any).ym(109308702,'reachGoal','start_session', {varian: localStorage.getItem('ab_test_pain_filter')})
-  
+  (window as any).ym(109308702,'reachGoal','start_session', {variant: JSON.parse(localStorage.getItem('ab_test_pain_filter') || '{variant: "A"}').variant})
+
   return (
     <ThemeProvider>
       <CartProvider>
