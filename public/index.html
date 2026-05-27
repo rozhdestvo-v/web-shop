@@ -117,6 +117,11 @@
         "ymab",
       );
       ymab("metrika.109308702", "init" /*, {clientFeatures}, {callback}*/);
+      ymab("metrika.109308702", "getFlags", function (flags) {
+        for (const [key, value] of Object.entries(flags)) {
+          console.log(key, value)
+        }
+})
     </script>
 
     <title>CodeShop</title>
