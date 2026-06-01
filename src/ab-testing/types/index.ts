@@ -6,7 +6,7 @@
 
 // ─── A/B Test Variant ───────────────────────────────────────────────────────────
 
-export type ABVariant = 'A' | 'B' | 'C';
+export type ABVariant = 'A' | 'B' | 'C' | 'D' | 'AB' | 'AC' | 'AD';
 
 export interface ABTestConfig {
   /** Уникальный идентификатор эксперимента */

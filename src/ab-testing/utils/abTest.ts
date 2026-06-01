@@ -92,7 +92,9 @@ export function assignVariant(): ABVariant {
     let variant: ABVariant;
     
     if (random < AB_TEST_CONFIG.trafficSplit) {
-      variant = 'A';
+      variant = 'AB';
+      // variant = 'AC';
+      // variant = 'AD';
     } else if (random < AB_TEST_CONFIG.trafficSplit * 2) {
       variant = 'B';
       // variant = 'C';
