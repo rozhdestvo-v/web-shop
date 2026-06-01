@@ -6,9 +6,11 @@ import { FavoritesProvider } from './context/FavoritesContext';
 import { Header, Footer } from './components';
 import { HomePage, CatalogPage, CartPage, ProductPage, ProfilePage, CheckoutPage, ABTestDashboardPage } from './pages';
 import './index';
+import { assignVariant } from './ab-testing';
 
 const App: React.FC = () => {
-  (window as any).ym(109308702,'reachGoal','start_session', {variant: JSON.parse(localStorage.getItem('ab_test_pain_filter') || '{variant: "A"}').variant})
+  assignVariant();
+  (window as any).ym(109308702,'reachGoal','start_session', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
 
   return (
     <ThemeProvider>

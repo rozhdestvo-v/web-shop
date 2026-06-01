@@ -626,7 +626,7 @@ const CatalogPage: React.FC = () => {
         {/* Сетка товаров */}
         <Grid size={{ xs: 12, md: 9 }}>
           {/* A/B Test Indicator Badge */}
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               justifyContent: 'flex-end',
@@ -644,7 +644,7 @@ const CatalogPage: React.FC = () => {
             >
               {abTest.isVariantB ? '🧪 Variant B — Фильтр по задачам' : '🧪 Variant A — Классические категории'}
             </Typography>
-          </Box>
+          </Box> */}
 
           {filteredProducts.length > 0 ? (
             <Grid container spacing={2.5}>

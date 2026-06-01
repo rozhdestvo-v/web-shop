@@ -1,11 +1,13 @@
 import React from 'react';
 import { Box, Typography, CardContent, Stack, Chip } from '@mui/material';
-import { Star } from '@mui/icons-material';
+import { AddShoppingCart, Favorite, FavoriteBorder, Star } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../GlassCard/GlassCard';
 import { useTheme } from '../../context/ThemeContext';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
 import { PAIN_TAGS_META, useABTest } from '../../ab-testing';
+import { useFavorites } from '../../context/FavoritesContext';
+import GlassButton from '../GlassButton/GlassButton';
 
 export interface Product {
   id: number;
@@ -35,6 +37,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const abTest = useABTest();
   const firstPainTag = abTest.getProductPainTags(product.id)[0];
+  const {isFavorite, toggleFavorite} = useFavorites()
+
+  const isVariantC = JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant === 'C'
+  const isVariantD = JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant === 'D'
   
   const navigate = useNavigate();
   const { mode } = useTheme();
@@ -86,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
             animation: 'pulse-glow 2s ease-in-out infinite',
           }}
-        >{abTest.isVariantC && firstPainTag ? PAIN_TAGS_META[firstPainTag].label : `-${discount}%`}
+        >{isVariantC && firstPainTag ? PAIN_TAGS_META[firstPainTag].label : `-${discount}%`}
         </Box>
       )}
 
@@ -113,9 +119,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
       )}
 
       {/* Кнопка избранного */}
-      {/* <Box
+      {isVariantD && <Box
         onClick={(e) => {
           e.stopPropagation();
+          if (!isFavorite) {
+            (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
+          }
           toggleFavorite(product);
         }}
         sx={{
@@ -158,7 +167,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             }}
           />
         )}
-      </Box> */}
+      </Box>}
 
       {/* Изображение с каруселью */}
       <Box
@@ -307,12 +316,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Box>
 
           {/* Кнопка "В корзину" */}
-          {/* <GlassButton
+          {isVariantD && <GlassButton
             variant="contained"
             size="small"
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               onAddToCart?.(product);
+              (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
             }}
             sx={{
               minWidth: 'auto',
@@ -327,7 +337,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             }}
           >
             <AddShoppingCart fontSize="small" />
-          </GlassButton> */}
+          </GlassButton>}
         </Stack>
       </CardContent>
     </GlassCard>

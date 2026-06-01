@@ -63,11 +63,11 @@ export const PainFilter: React.FC<PainFilterProps> = ({
 
   return (
     <Box sx={{ 
-      p: 2, 
-      mb: 3, 
-      backgroundColor: isDark ? '#1e293b' : '#f8fafc',
-      borderRadius: '12px',
-      border: `1px solid ${isDark ? '#334155' : '#e2e8f1'}`
+      // p: 2, 
+      // mb: 3, 
+      // backgroundColor: isDark ? '#1e293b' : '#f8fafc',
+      // borderRadius: '12px',
+      // border: `1px solid ${isDark ? '#334155' : '#e2e8f1'}`
     }}>
       <Typography 
         variant="h6" 

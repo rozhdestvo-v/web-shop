@@ -109,7 +109,7 @@ const ProductPage: React.FC = () => {
     }
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
-    (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {experiment: 'first', variant: JSON.parse(localStorage.getItem('ab_test_pain_filter') || '{variant: "A"}').variant})
+    (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
   };
 
   const handleHelpfulClick = (reviewIndex: number) => {
@@ -586,7 +586,7 @@ const ProductPage: React.FC = () => {
                     if (product) {
                       toggleFavorite(product);
                     }
-                    (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {experiment: 'first', variant: JSON.parse(localStorage.getItem('ab_test_pain_filter') || '{variant: "A"}').variant})
+                    (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
                   }}
                   sx={{
                     background: isFavorite(product?.id || 0)

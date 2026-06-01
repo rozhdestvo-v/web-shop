@@ -35,7 +35,7 @@ export const AB_TEST_CONFIG: ABTestConfig = {
 
 // ─── Ключи хранения ─────────────────────────────────────────────────────────────
 
-const STORAGE_KEY = 'ab_test_pain_filter';
+const STORAGE_KEY = 'ab_test';
 const SESSION_KEY = 'ab_test_session_id';
 
 // ─── Утилиты ────────────────────────────────────────────────────────────────────
@@ -95,6 +95,8 @@ export function assignVariant(): ABVariant {
       variant = 'A';
     } else if (random < AB_TEST_CONFIG.trafficSplit * 2) {
       variant = 'B';
+      // variant = 'C';
+      // variant = 'D';
     } else {
       variant = 'C'; // Третий вариант для "Собрать сетап"
     }
