@@ -59,7 +59,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <GlassCard
       hover
       elevation="medium"
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => {
+        (window as any).ym(109308702,'reachGoal','click_on_product', {metric: 'click_on_product', variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
+        navigate(`/product/${product.id}`)}}
       sx={{
         height: '100%',
         display: 'flex',
@@ -123,7 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         onClick={(e) => {
           e.stopPropagation();
           if (!isFavorite) {
-            (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
+            (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {metric: 'add_to_cart_or_favorite', variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
           }
           toggleFavorite(product);
         }}
@@ -322,7 +324,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               onAddToCart?.(product);
-              (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
+              (window as any).ym(109308702,'reachGoal','add_to_cart_or_favorite', {metric: 'add_to_cart_or_favorite', variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
             }}
             sx={{
               minWidth: 'auto',

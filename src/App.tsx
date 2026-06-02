@@ -10,7 +10,7 @@ import { assignVariant } from './ab-testing';
 
 const App: React.FC = () => {
   assignVariant();
-  (window as any).ym(109308702,'reachGoal','start_session', {variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
+  (window as any).ym(109308702,'reachGoal','start_session', {metric: 'start_session', variant: JSON.parse(localStorage.getItem('ab_test') || '{variant: "A"}').variant})
 
   return (
     <ThemeProvider>
