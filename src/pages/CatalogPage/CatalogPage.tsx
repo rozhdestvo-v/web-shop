@@ -28,12 +28,6 @@ const CatalogPage: React.FC = () => {
   // Обёртка addToCart с аналитикой
   const handleAddToCart = (product: typeof products[0]) => {
     const painTags = abTest.isVariantB ? abTest.getProductPainTags(product.id) : [];
-    analytics.trackAddToCart(
-      product.id,
-      product.name,
-      product.category,
-      painTags.length > 0 ? painTags[0] : undefined
-    );
     addToCart(product);
   };
 
